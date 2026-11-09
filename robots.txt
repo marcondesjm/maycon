@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Source references, copies and restore snapshots are not public site pages.
+Disallow: /Maycon/
+Disallow: /versions/
+Disallow: /tools/
+Disallow: /design-plan.txt
+Disallow: /seo-config.json
+Disallow: /SEO.md
+Disallow: /README.md
+Disallow: /*.pdf$
+Disallow: /*.ai$
+Disallow: /Site.png
+Disallow: /site-reference.png
