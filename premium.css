@@ -169,3 +169,19 @@ em{font-family:'Syne',Arial,sans-serif;font-size:1em;font-style:normal;font-weig
 @media(max-width:760px){.hero h1 em{font-size:1em}.ticker-track span{font-size:17px}.service p{min-height:165px}blockquote,.founder blockquote{font-size:24px;line-height:1.45}}
 @media(max-width:380px){.service p{min-height:0}.hero h1{font-size:30px}}
 @media(max-width:760px){.contact h2{font-size:clamp(32px,9vw,40px);line-height:1.2}}
+/* Identidade neutra: preto oficial e cinzas, com cores das especialidades preservadas. */
+:root{--deep:#1a1a1a;--ink:#1a1a1a;--muted:#626262;--soft:#ededed}
+.hero.motion-hero:before,.hero:before{background:linear-gradient(90deg,rgba(26,26,26,.82),rgba(26,26,26,.48) 48%,rgba(26,26,26,.08) 86%)}
+.specialty-strip,.company,.contact,.dark,.header nav.open{background:#1a1a1a}
+.dark:hover{background:#353535}
+.hero .hero-scene{background-color:#1a1a1a}
+.editorial-ticker{background:#ededeb;color:#383838;border-color:#d6d6d4}
+.vision-section{background:#ececea;color:#1a1a1a}
+.vision-section:before{border-color:#aaa6}
+.vision-heading .eyebrow,.vision-heading>p,.vision-intro,.vision-section .values p,.vision-footer{color:#626262}
+.vision-intro,.vision-section .values article{border-color:#c3c3c0}.vision-line{background:#c3c3c0}
+.value-top svg{stroke:#858585}.vision-section article:hover svg{stroke:#4a4a4a}
+.light{color:#1a1a1a}.founder blockquote{color:#303030}.motion-cursor.is-photo>span{background:#1a1a1ab3}
+.service,.service.motion-card{background:#f3f3f1;border-color:#d6d6d4}.service.motion-card:hover{border-color:color-mix(in srgb,var(--accent) 35%,#d6d6d4)}
+@media(max-width:760px){.header nav{background:#1a1a1a}.hero:before,.hero.motion-hero:before{background:linear-gradient(90deg,rgba(26,26,26,.86),rgba(26,26,26,.45))}.service,.service.motion-card,.service:first-child,.service:nth-child(2),.service:nth-child(3),.service:last-child{border-color:#d6d6d4}}
+.company .body-copy,.contact-copy>p:not(.eyebrow),.footer-top p{color:#c4c4c4}.company .photo-caption,.footer-bottom{color:#b8b8b8}.hero-description{color:#e3e3e3}.vision-heading h2 em{color:#5d5d5}
