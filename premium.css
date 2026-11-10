@@ -185,3 +185,16 @@ em{font-family:'Syne',Arial,sans-serif;font-size:1em;font-style:normal;font-weig
 .service,.service.motion-card{background:#f3f3f1;border-color:#d6d6d4}.service.motion-card:hover{border-color:color-mix(in srgb,var(--accent) 35%,#d6d6d4)}
 @media(max-width:760px){.header nav{background:#1a1a1a}.hero:before,.hero.motion-hero:before{background:linear-gradient(90deg,rgba(26,26,26,.86),rgba(26,26,26,.45))}.service,.service.motion-card,.service:first-child,.service:nth-child(2),.service:nth-child(3),.service:last-child{border-color:#d6d6d4}}
 .company .body-copy,.contact-copy>p:not(.eyebrow),.footer-top p{color:#c4c4c4}.company .photo-caption,.footer-bottom{color:#b8b8b8}.hero-description{color:#e3e3e3}.vision-heading h2 em{color:#5d5d5}
+/* Header photos: real images cross-fade behind the fixed copy. */
+.hero .hero-slideshow{background:#1a1a1a;overflow:hidden}
+.hero-slideshow:after{display:none}
+.hero-slideshow .hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;transition:opacity 1.35s ease;pointer-events:none}
+.hero-slideshow .hero-slide.is-current{opacity:1}
+.hero-controls{display:flex;align-items:center;gap:8px;color:white}
+.hero-controls button{width:38px;height:38px;display:grid;place-items:center;background:#1a1a1a55;color:white;border:1px solid #ffffff80;border-radius:50%;cursor:pointer;font-size:17px;line-height:1;transition:background .25s,border-color .25s}
+.hero-controls button:hover,.hero-controls button:focus-visible{background:#1a1a1acc;border-color:#fff}
+.hero-controls .slide-pause{font-size:14px;margin-left:5px}
+.slide-counter{min-width:58px;text-align:center;font-size:11px;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+@media(max-width:760px){.hero-bottom{gap:8px}.hero-bottom .eyebrow{max-width:100px;line-height:1.5}.hero-controls{gap:4px}.hero-controls button{width:36px;height:36px}.slide-counter{min-width:52px;font-size:10px}.hero-slideshow .hero-slide{object-position:55% center}}
+@media(max-width:380px){.hero-bottom .eyebrow{max-width:80px;font-size:6px}.hero-controls button{width:34px;height:34px}.slide-counter{min-width:47px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){.hero-slideshow .hero-slide{transition:none}}

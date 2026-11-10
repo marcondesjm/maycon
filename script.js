@@ -28,9 +28,7 @@ document.querySelector('#download').addEventListener('click', () => { const url 
   const signal = controller.signal;
   const cleanups = [];
   const hero = document.querySelector('.hero');
-  const scene = document.createElement('div');
-  scene.className = 'hero-scene'; scene.setAttribute('aria-hidden','true');
-  hero.prepend(scene); hero.classList.add('motion-hero');
+  const scene = hero.querySelector('.hero-scene');
   const progress = document.createElement('div');
   progress.className = 'motion-progress'; progress.setAttribute('aria-hidden','true'); document.body.append(progress);
   const headings = [...document.querySelectorAll('h1,h2')];
@@ -106,7 +104,34 @@ document.querySelector('#download').addEventListener('click', () => { const url 
     const reset=()=>['--tilt-x','--tilt-y','--light-x','--light-y'].forEach(k=>el.style.removeProperty(k));el.addEventListener('pointerleave',reset,{signal});cleanups.push(()=>{reset();el.classList.remove('motion-card');});
    });
   }
-  dispose=()=>{controller.abort();observer.disconnect();cancelAnimationFrame(scrollFrame);cancelAnimationFrame(pointerFrame);targets.forEach(el=>{el.classList.remove('motion-ready','motion-pending','is-visible');el.style.removeProperty('--reveal-delay');});photoObserver.disconnect();photos.forEach(img=>{const frame=img.parentElement;frame.replaceWith(img);['--photo-y','--photo-x','--photo-mouse-y'].forEach(k=>img.style.removeProperty(k));});cleanups.reverse().forEach(fn=>fn());scene.remove();progress.remove();hero.classList.remove('motion-hero');};
+  dispose=()=>{controller.abort();observer.disconnect();cancelAnimationFrame(scrollFrame);cancelAnimationFrame(pointerFrame);targets.forEach(el=>{el.classList.remove('motion-ready','motion-pending','is-visible');el.style.removeProperty('--reveal-delay');});photoObserver.disconnect();photos.forEach(img=>{const frame=img.parentElement;frame.replaceWith(img);['--photo-y','--photo-x','--photo-mouse-y'].forEach(k=>img.style.removeProperty(k));});cleanups.reverse().forEach(fn=>fn());progress.remove();};
  }
  start(); reduce.addEventListener('change',start);fine.addEventListener('change',start);
+})();
+
+// Header slideshow: keep manual controls available even with reduced motion.
+(() => {
+ const hero = document.querySelector('.hero');
+ const slides = [...hero.querySelectorAll('.hero-slide')];
+ const prev = hero.querySelector('.slide-prev'), next = hero.querySelector('.slide-next');
+ const pause = hero.querySelector('.slide-pause'), counter = hero.querySelector('.slide-counter');
+ const motion = matchMedia('(prefers-reduced-motion: reduce)');
+ let current = 0, paused = motion.matches, timer = null, inView = true;
+ const sync = () => {
+  slides.forEach((slide,i) => slide.classList.toggle('is-current', i === current));
+  counter.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+  pause.setAttribute('aria-label',paused ? 'Retomar apresentação' : 'Pausar apresentação');
+  pause.setAttribute('aria-pressed',String(paused)); pause.textContent = paused ? '▶' : 'Ⅱ';
+ };
+ const stop = () => { clearInterval(timer); timer = null; };
+ const run = () => { stop(); if (!paused && !document.hidden && inView && !document.activeElement.closest('.hero-controls')) timer = setInterval(() => { current=(current+1)%slides.length; sync(); },6500); };
+ const move = direction => { current=(current+direction+slides.length)%slides.length; paused=true; sync(); run(); };
+ prev.addEventListener('click',()=>move(-1)); next.addEventListener('click',()=>move(1));
+ pause.addEventListener('click',()=>{paused=!paused;sync();run();});
+ hero.addEventListener('focusin', event=>{if (event.target.closest('.hero-controls')) stop();});
+ hero.addEventListener('focusout', event=>{if (event.target.closest('.hero-controls') && !event.relatedTarget?.closest('.hero-controls')) run();});
+ document.addEventListener('visibilitychange',run);
+ motion.addEventListener('change',()=>{if(motion.matches){paused=true;sync();}run();});
+ if ('IntersectionObserver' in window) new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;run();},{threshold:0}).observe(hero);
+ sync();run();
 })();
