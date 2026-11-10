@@ -116,7 +116,7 @@ document.querySelector('#download').addEventListener('click', () => { const url 
  const prev = hero.querySelector('.slide-prev'), next = hero.querySelector('.slide-next');
  const pause = hero.querySelector('.slide-pause'), counter = hero.querySelector('.slide-counter');
  const motion = matchMedia('(prefers-reduced-motion: reduce)');
- let current = 0, paused = motion.matches, timer = null, inView = true;
+ let current = 0, paused = motion.matches, timer = null, inView = true, request = 0;
  const sync = () => {
   slides.forEach((slide,i) => slide.classList.toggle('is-current', i === current));
   counter.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
@@ -124,8 +124,19 @@ document.querySelector('#download').addEventListener('click', () => { const url 
   pause.setAttribute('aria-pressed',String(paused)); pause.textContent = paused ? '▶' : 'Ⅱ';
  };
  const stop = () => { clearInterval(timer); timer = null; };
- const run = () => { stop(); if (!paused && !document.hidden && inView && !document.activeElement.closest('.hero-controls')) timer = setInterval(() => { current=(current+1)%slides.length; sync(); },6500); };
- const move = direction => { current=(current+direction+slides.length)%slides.length; paused=true; sync(); run(); };
+ const load = async index => {
+  const image = slides[index];
+  if (image.dataset.src) { image.sizes='100vw'; image.srcset=image.dataset.srcset; image.src=image.dataset.src; delete image.dataset.src; delete image.dataset.srcset; }
+  try { await image.decode(); return true; } catch { return image.complete && image.naturalWidth>0; }
+ };
+ const show = async index => {
+  const sequence=++request;
+  if (!await load(index) || sequence!==request) return;
+  current=index;sync();
+  if (!paused && !document.hidden && inView) void load((current+1)%slides.length);
+ };
+ const run = () => { stop(); if (!paused && !document.hidden && inView && !document.activeElement.closest('.hero-controls')) { void load((current+1)%slides.length); timer = setInterval(() => { void show((current+1)%slides.length); },6500); } };
+ const move = direction => { paused=true; sync(); run(); void show((current+direction+slides.length)%slides.length); };
  prev.addEventListener('click',()=>move(-1)); next.addEventListener('click',()=>move(1));
  pause.addEventListener('click',()=>{paused=!paused;sync();run();});
  hero.addEventListener('focusin', event=>{if (event.target.closest('.hero-controls')) stop();});
