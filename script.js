@@ -3,7 +3,14 @@ const navigation = document.querySelector('#navigation');
 menu.addEventListener('click', () => { const open = menu.getAttribute('aria-expanded') !== 'true'; menu.setAttribute('aria-expanded', String(open)); navigation.classList.toggle('open', open); });
 navigation.addEventListener('click', event => { if (event.target.closest('a')) { menu.setAttribute('aria-expanded', 'false'); navigation.classList.remove('open'); } });
 document.addEventListener('keydown', event => { if (event.key === 'Escape') { menu.setAttribute('aria-expanded', 'false'); navigation.classList.remove('open'); } });
-document.querySelectorAll('[data-service]').forEach(link => link.addEventListener('click', () => { document.querySelector('#especialidade').value = link.dataset.service; }));
+const specialty = document.querySelector('#especialidade');
+const requestedSpecialty = new URLSearchParams(location.search).get('especialidade');
+if (requestedSpecialty && [...specialty.options].some(option => option.value === requestedSpecialty)) {
+  specialty.value = requestedSpecialty;
+}
+document.querySelectorAll('[data-service]').forEach(link => link.addEventListener('click', () => {
+  specialty.value = link.dataset.service;
+}));
 const form = document.querySelector('#briefing');
 let briefing = '';
 form.addEventListener('submit', event => {

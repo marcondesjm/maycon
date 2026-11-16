@@ -198,3 +198,14 @@ em{font-family:'Syne',Arial,sans-serif;font-size:1em;font-style:normal;font-weig
 @media(max-width:760px){.hero-bottom{gap:8px}.hero-bottom .eyebrow{max-width:100px;line-height:1.5}.hero-controls{gap:4px}.hero-controls button{width:36px;height:36px}.slide-counter{min-width:52px;font-size:10px}.hero-slideshow .hero-slide{object-position:55% center}}
 @media(max-width:380px){.hero-bottom .eyebrow{max-width:80px;font-size:6px}.hero-controls button{width:34px;height:34px}.slide-counter{min-width:47px;font-size:9px}}
 @media(prefers-reduced-motion:reduce){.hero-slideshow .hero-slide{transition:none}}
+
+.signature .solutions-link {
+  margin-inline-start: auto;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+@media (max-width: 650px) {
+  .signature { flex-wrap: wrap; }
+  .signature .solutions-link { margin-inline-start: 0; }
+}
