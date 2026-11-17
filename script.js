@@ -150,6 +150,15 @@ document.querySelector('#download').addEventListener('click', () => { const url 
   if (source.includes('/staff-')) return 'staff';
   if (source.includes('/conservacao-')) return 'conservacao';
   if (source.includes('/meat-') || source.includes('/aliment')) return 'meat';
+
+  // Os slides "operacao" usam nomes genéricos; mapeamento visual confirmado:
+  // 01 e 03 = Conservação; 02 e 04–09 = Alimentação / Meat Service.
+  const match = source.match(/operacao-(\d{2})/);
+  if (match) {
+    const number = Number(match[1]);
+    if (number === 1 || number === 3) return 'conservacao';
+    if ([2,4,5,6,7,8,9].includes(number)) return 'meat';
+  }
   return '';
  };
  const sync = () => {
