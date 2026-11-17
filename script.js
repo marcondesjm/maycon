@@ -143,8 +143,19 @@ document.querySelector('#download').addEventListener('click', () => { const url 
  const pause = hero.querySelector('.slide-pause'), counter = hero.querySelector('.slide-counter');
  const motion = matchMedia('(prefers-reduced-motion: reduce)');
  let current = 0, paused = motion.matches, timer = null, inView = true, request = 0;
+ const specialtyLabels = [...hero.querySelectorAll('.hero-specialty')];
+ const identifySpecialty = slide => {
+  const source = (slide.currentSrc || slide.src || slide.dataset.src || '').toLowerCase();
+  if (source.includes('/obras-')) return 'obras';
+  if (source.includes('/staff-')) return 'staff';
+  if (source.includes('/conservacao-')) return 'conservacao';
+  if (source.includes('/meat-') || source.includes('/aliment')) return 'meat';
+  return '';
+ };
  const sync = () => {
   slides.forEach((slide,i) => slide.classList.toggle('is-current', i === current));
+  const activeSpecialty = identifySpecialty(slides[current]);
+  specialtyLabels.forEach(label => label.classList.toggle('is-slide-active', label.classList.contains(`hero-specialty-${activeSpecialty}`)));
   counter.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
   pause.setAttribute('aria-label',paused ? 'Retomar apresentação' : 'Pausar apresentação');
   pause.setAttribute('aria-pressed',String(paused)); pause.textContent = paused ? '▶' : 'Ⅱ';
