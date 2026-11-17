@@ -16,18 +16,9 @@ document.querySelectorAll('[data-service]').forEach(link => link.addEventListene
 document.querySelectorAll('.service').forEach(card => {
   const link = card.querySelector('a[href]');
   if (!link) return;
-  card.setAttribute('role', 'link');
-  card.setAttribute('tabindex', '0');
-  card.setAttribute('aria-label', link.getAttribute('aria-label') || card.querySelector('h3')?.textContent?.trim() || 'Abrir especialidade');
   card.addEventListener('click', event => {
     if (event.target.closest('a, button, input, textarea, select')) return;
     location.href = link.href;
-  });
-  card.addEventListener('keydown', event => {
-    if ((event.key === 'Enter' || event.key === ' ') && !event.target.closest('a, button, input, textarea, select')) {
-      event.preventDefault();
-      location.href = link.href;
-    }
   });
 });
 const form = document.querySelector('#briefing');
@@ -37,7 +28,10 @@ form.addEventListener('submit', event => {
  const data = new FormData(form);
  briefing = `Briefing — Maycon Vieira Services\n\nNome: ${data.get('nome').trim()}\nEmpresa: ${data.get('empresa').trim()}\nE-mail: ${data.get('email').trim()}\nEspecialidade: ${data.get('especialidade')}\n\nDemanda:\n${data.get('demanda').trim()}`;
  document.querySelector('#briefing-preview').textContent = briefing;
- document.querySelector('#form-result').hidden = false;
+ const result = document.querySelector('#form-result');
+ result.hidden = false;
+ result.focus({preventScroll:true});
+ result.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'nearest'});
 });
 document.querySelector('#download').addEventListener('click', () => { const url = URL.createObjectURL(new Blob(['\uFEFF' + briefing], {type:'text/plain;charset=utf-8'})); const link = document.createElement('a'); link.href = url; link.download = 'briefing-maycon-vieira.txt'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); });
 
@@ -141,6 +135,7 @@ document.querySelector('#download').addEventListener('click', () => { const url 
  const slides = [...hero.querySelectorAll('.hero-slide')];
  const prev = hero.querySelector('.slide-prev'), next = hero.querySelector('.slide-next');
  const pause = hero.querySelector('.slide-pause'), counter = hero.querySelector('.slide-counter');
+ const status = hero.querySelector('.slide-status');
  const motion = matchMedia('(prefers-reduced-motion: reduce)');
  let current = 0, paused = motion.matches, timer = null, inView = true, request = 0;
  const specialtyLabels = [...hero.querySelectorAll('.hero-specialty')];
@@ -166,6 +161,8 @@ document.querySelector('#download').addEventListener('click', () => { const url 
   const activeSpecialty = identifySpecialty(slides[current]);
   specialtyLabels.forEach(label => label.classList.toggle('is-slide-active', label.classList.contains(`hero-specialty-${activeSpecialty}`)));
   counter.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+  const specialtyName = activeSpecialty === 'meat' ? 'Alimentação' : activeSpecialty === 'conservacao' ? 'Conservação' : activeSpecialty === 'obras' ? 'Obras' : activeSpecialty === 'staff' ? 'Staff' : 'Imagem institucional';
+  if (status) status.textContent = `Slide ${current+1} de ${slides.length}: ${specialtyName}`;
   pause.setAttribute('aria-label',paused ? 'Retomar apresentação' : 'Pausar apresentação');
   pause.setAttribute('aria-pressed',String(paused)); pause.textContent = paused ? '▶' : 'Ⅱ';
  };
