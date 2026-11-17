@@ -13,7 +13,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .sector-page { --accent: #353535; --surface: #f5f6f5; }
 .sector-page.meat { --accent: #a51632; --surface: #faf5f6; }
 .sector-page.conservacao { --accent: #214682; --surface: #f4f7f6; }
-.sector-page.obras { --accent: #805800; --surface: #faf7ef; }
+.sector-page.obras { --accent: #f4b41a; --surface: #faf7ef; }
 .sector-page.staff { --accent: #725510; --surface: #f8f6ee; }
 .sector-wrap { width: min(86%, 1230px); margin-inline: auto; }
 .sector-skip { position: absolute; left: 1rem; top: -10rem; z-index: 2; padding: .75rem; background: white; }
@@ -134,7 +134,7 @@ h2 { font-size: clamp(2.15rem, 4.4vw, 3.4rem); }
 .sector-related a::before { content: "•"; margin-right: .6rem; color: var(--related-color, #333); }
 .sector-related .meat { --related-color: #a51632; }
 .sector-related .conservacao { --related-color: #214682; }
-.sector-related .obras { --related-color: #805800; }
+.sector-related .obras { --related-color: #f4b41a; }
 .sector-related .staff { --related-color: #725510; }
 .sector-contact { background: #252323; color: white; padding: 3.6rem 0; }
 .sector-contact .sector-wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.6rem; }
@@ -160,3 +160,7 @@ h2 { font-size: clamp(2.15rem, 4.4vw, 3.4rem); }
   .sector-related a:nth-child(odd) { border-left: 0; padding-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) { :root { scroll-behavior: auto; } }
+
+/* Legibilidade sobre o amarelo da identidade de Obras. */
+.sector-page.obras .sector-brand span, .sector-page.obras .sector-button-primary, .sector-page.obras .group-icon::before { color: #664800; }
+.sector-page.obras .group-letter { color: #202020; }
