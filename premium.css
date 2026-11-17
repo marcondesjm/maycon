@@ -209,3 +209,27 @@ em{font-family:'Syne',Arial,sans-serif;font-size:1em;font-style:normal;font-weig
   .signature { flex-wrap: wrap; }
   .signature .solutions-link { margin-inline-start: 0; }
 }
+
+/* Sincroniza o texto das especialidades com a foto ativa do carrossel. */
+.hero-specialty{
+  display:inline-block;
+  position:relative;
+  font-family:'Manrope',Arial,sans-serif;
+  font-weight:500;
+  color:inherit;
+  transition:color .45s ease,font-weight .45s ease,transform .45s ease,text-shadow .45s ease;
+}
+.hero-specialty.is-slide-active{
+  font-family:'Syne',Arial,sans-serif;
+  font-weight:700;
+  transform:translateY(-1px);
+  text-shadow:0 0 22px currentColor;
+}
+.hero-specialty-obras.is-slide-active{color:#f4b41a}
+.hero-specialty-staff.is-slide-active{color:#d2a63e}
+.hero-specialty-conservacao.is-slide-active{color:#5ba7d4}
+.hero-specialty-meat.is-slide-active{color:#ff6b7f}
+@media(prefers-reduced-motion:reduce){
+  .hero-specialty{transition:none}
+  .hero-specialty.is-slide-active{transform:none}
+}
