@@ -481,3 +481,73 @@ h2 { font-size: clamp(2.15rem, 4.4vw, 3.4rem); }
     transition:none!important;
   }
 }
+
+/* Carrossel automático das páginas internas, seguindo a lógica da home. */
+.sr-only{
+  position:absolute!important;
+  width:1px!important;height:1px!important;
+  padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;border:0!important;
+}
+.sector-photo.is-changing{opacity:0}
+.sector-photo-controls{
+  position:absolute;
+  right:7%;
+  bottom:1rem;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#fff;
+}
+.sector-photo-controls button{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:1px solid #ffffff80;
+  border-radius:50%;
+  background:#17171766;
+  color:#fff;
+  cursor:pointer;
+  font:inherit;
+  font-size:17px;
+  line-height:1;
+  transition:background .25s ease,border-color .25s ease,transform .25s ease;
+}
+.sector-photo-controls button:hover,
+.sector-photo-controls button:focus-visible{
+  background:#171717d9;
+  border-color:#fff;
+  transform:translateY(-1px);
+}
+.sector-photo-controls .sector-slide-pause{
+  margin-left:4px;
+  font-size:14px;
+}
+.sector-slide-counter{
+  min-width:54px;
+  text-align:center;
+  font-size:11px;
+  letter-spacing:.12em;
+  font-variant-numeric:tabular-nums;
+}
+@media(max-width:590px){
+  .sector-photo-controls{
+    right:5%;
+    gap:4px;
+  }
+  .sector-photo-controls button{
+    width:40px;
+    height:40px;
+  }
+  .sector-slide-counter{
+    min-width:48px;
+    font-size:10px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .sector-photo.is-changing{opacity:1}
+  .sector-photo-controls button{transition:none}
+}
