@@ -189,3 +189,31 @@ document.querySelector('#download').addEventListener('click', () => { const url 
  if ('IntersectionObserver' in window) new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;run();},{threshold:0}).observe(hero);
  sync();run();
 })();
+
+
+/* Dual editorial ticker: scroll drives rows in opposite directions. */
+(() => {
+  const ticker = document.querySelector('.editorial-ticker-dual');
+  if (!ticker || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const topTrack = ticker.querySelector('.ticker-row-top .ticker-track');
+  const bottomTrack = ticker.querySelector('.ticker-row-bottom .ticker-track');
+  let raf = 0;
+
+  const render = () => {
+    raf = 0;
+    const rect = ticker.getBoundingClientRect();
+    const centerDelta = (innerHeight * .5) - (rect.top + rect.height * .5);
+    const travel = Math.max(-260, Math.min(260, centerDelta * .22));
+    topTrack.style.setProperty('--ticker-x', (-travel) + 'px');
+    bottomTrack.style.setProperty('--ticker-x', travel + 'px');
+  };
+
+  const queue = () => {
+    if (!raf) raf = requestAnimationFrame(render);
+  };
+
+  addEventListener('scroll', queue, {passive:true});
+  addEventListener('resize', queue, {passive:true});
+  render();
+})();
