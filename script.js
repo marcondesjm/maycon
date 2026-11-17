@@ -11,6 +11,25 @@ if (requestedSpecialty && [...specialty.options].some(option => option.value ===
 document.querySelectorAll('[data-service]').forEach(link => link.addEventListener('click', () => {
   specialty.value = link.dataset.service;
 }));
+
+// Make each specialty card behave like a full clickable destination while preserving its internal link.
+document.querySelectorAll('.service').forEach(card => {
+  const link = card.querySelector('a[href]');
+  if (!link) return;
+  card.setAttribute('role', 'link');
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('aria-label', link.getAttribute('aria-label') || card.querySelector('h3')?.textContent?.trim() || 'Abrir especialidade');
+  card.addEventListener('click', event => {
+    if (event.target.closest('a, button, input, textarea, select')) return;
+    location.href = link.href;
+  });
+  card.addEventListener('keydown', event => {
+    if ((event.key === 'Enter' || event.key === ' ') && !event.target.closest('a, button, input, textarea, select')) {
+      event.preventDefault();
+      location.href = link.href;
+    }
+  });
+});
 const form = document.querySelector('#briefing');
 let briefing = '';
 form.addEventListener('submit', event => {
@@ -95,7 +114,7 @@ document.querySelector('#download').addEventListener('click', () => { const url 
    let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y,hx=0,hy=0,px=0,py=0;
    function tick(){cx+=(x-cx)*.24;cy+=(y-cy)*.24;px+=(hx-px)*.075;py+=(hy-py)*.075;cursor.style.transform=`translate3d(${cx}px,${cy}px,0)`;scene.style.setProperty('--scene-x',`${px}px`);scene.style.setProperty('--scene-y',`${py}px`);if(Math.abs(cx-x)+Math.abs(cy-y)+Math.abs(px-hx)+Math.abs(py-hy)>.08)pointerFrame=requestAnimationFrame(tick);else pointerFrame=0;}
    const wake=()=>{if(!pointerFrame)pointerFrame=requestAnimationFrame(tick);};
-   document.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;x=e.clientX;y=e.clientY;cursor.style.opacity=e.target.closest('input,textarea,select')?'0':'1';cursor.classList.toggle('is-active',!!e.target.closest('a,button'));cursor.classList.toggle('is-photo',!!e.target.closest('.motion-photo'));wake();},{passive:true,signal});
+   document.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;x=e.clientX;y=e.clientY;cursor.style.opacity=e.target.closest('input,textarea,select')?'0':'1';cursor.classList.toggle('is-active',!!e.target.closest('a,button,.service'));cursor.classList.toggle('is-photo',!!e.target.closest('.motion-photo'));wake();},{passive:true,signal});
    document.documentElement.addEventListener('pointerleave',()=>{cursor.style.opacity='0';hx=hy=0;wake();},{signal});
    addEventListener('blur',()=>{cursor.style.opacity='0';},{signal});
    hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect();hx=(e.clientX/r.width-.5)*-14;hy=((e.clientY-r.top)/r.height-.5)*-12;wake();},{passive:true,signal});
