@@ -423,7 +423,9 @@ O site possui:
 
 ## Contato do responsável pelo projeto
 
-- **Instagram:** [@marcondes.machado.ti](https://www.instagram.com/marcondes.machado.ti/)
+**Empresa:** MJM Digital
+
+- **Instagram:** [@marcondes.machado.oficial](https://www.instagram.com/marcondes.machado.oficial/)
 - **WhatsApp:** [48 9602-9392](https://wa.me/554896029392)
 - **E-mail:** [marcondesgestaotrafego@gmail.com](mailto:marcondesgestaotrafego@gmail.com)
 
