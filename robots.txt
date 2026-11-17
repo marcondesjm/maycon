@@ -13,3 +13,5 @@ Disallow: /*.pdf$
 Disallow: /*.ai$
 Disallow: /Site.png
 Disallow: /site-reference.png
+
+Sitemap: https://mv-services-phi.vercel.app/sitemap.xml
