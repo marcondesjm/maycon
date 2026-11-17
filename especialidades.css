@@ -235,3 +235,184 @@ h2 { font-size: clamp(2.15rem, 4.4vw, 3.4rem); }
   .sector-hero-content{padding-block:2rem 3.5rem}
   .sector-stats{margin-top:1rem}
 }
+
+/* Sistema visual unificado com a home */
+.sector-header{
+  background:#171717;
+  color:#fff;
+  border-bottom:1px solid #ffffff14;
+}
+.sector-header .sector-wrap{
+  min-height:86px;
+}
+.sector-brand span{color:#fff}
+.sector-header nav a{
+  color:#f3f3f3;
+  position:relative;
+  transition:color .25s ease,opacity .25s ease;
+}
+.sector-header nav a:hover,
+.sector-header nav a:focus-visible{
+  color:var(--accent);
+  text-decoration:none;
+}
+.sector-header-cta{
+  background:transparent;
+  border-color:#ffffff5c;
+  color:#fff;
+}
+.sector-header-cta:hover,
+.sector-header-cta:focus-visible{
+  background:color-mix(in srgb,var(--accent) 16%,#171717);
+  border-color:var(--accent);
+  color:#fff;
+}
+
+.sector-breadcrumb{
+  background:#f3f3f1;
+  border-bottom:1px solid #deded9;
+}
+.sector-breadcrumb a{font-weight:600}
+
+.sector-related{
+  background:#171717;
+  color:#fff;
+}
+.sector-related .sector-wrap{
+  width:min(100%,1226px);
+  padding-block:0;
+}
+.sector-related a{
+  position:relative;
+  min-height:86px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 34px!important;
+  border-right:1px solid #ffffff18!important;
+  border-left:0!important;
+  color:#f3f3f3;
+  font-weight:600;
+  transition:background .32s ease,color .32s ease,transform .32s ease;
+}
+.sector-related a::before{
+  content:'';
+  width:6px;
+  height:6px;
+  flex:0 0 auto;
+  margin:0;
+  border-radius:50%;
+  background:var(--related-color,#d8d8d8);
+  transition:transform .32s ease,box-shadow .32s ease;
+}
+.sector-related a::after{
+  content:'↗';
+  margin-left:auto;
+  font-size:17px;
+  opacity:0;
+  transform:translate(-8px,8px);
+  transition:opacity .32s ease,transform .32s ease;
+}
+.sector-related a:hover,
+.sector-related a:focus-visible{
+  background:color-mix(in srgb,var(--related-color,#d8d8d8) 16%,#171717);
+  color:#fff;
+  text-decoration:none;
+  transform:translateY(-1px);
+}
+.sector-related a:hover::before,
+.sector-related a:focus-visible::before{
+  transform:scale(1.35);
+  box-shadow:0 0 0 7px color-mix(in srgb,var(--related-color,#d8d8d8) 12%,transparent);
+}
+.sector-related a:hover::after,
+.sector-related a:focus-visible::after{
+  opacity:1;
+  transform:translate(0,0);
+}
+.sector-related .meat{--related-color:#c8102e}
+.sector-related .conservacao{--related-color:#005b96}
+.sector-related .obras{--related-color:#f4b41a}
+.sector-related .staff{--related-color:#b8860b}
+.sector-related a:not(.meat):not(.conservacao):not(.obras):not(.staff){--related-color:#bcbcbc}
+
+.profession-group{
+  border:1px solid #d6d6d4;
+  border-top:3px solid var(--accent);
+  background:#f7f7f4;
+}
+.profession-group summary{
+  min-height:72px;
+  transition:background .25s ease,color .25s ease;
+}
+.profession-group summary:hover,
+.profession-group summary:focus-visible{
+  background:color-mix(in srgb,var(--accent) 8%,#f7f7f4);
+}
+.profession-group[open]{
+  background:#fff;
+}
+.group-letter{
+  border-radius:0;
+}
+.group-icon::before{
+  font-weight:700;
+}
+
+.sector-button{
+  border-radius:0;
+  transition:background .25s ease,color .25s ease,border-color .25s ease,transform .25s ease;
+}
+.sector-button:hover,
+.sector-button:focus-visible{
+  transform:translateY(-1px);
+}
+.sector-button-primary{
+  color:#1a1a1a;
+}
+.sector-button-outlined:hover,
+.sector-button-outlined:focus-visible{
+  background:#ffffff18;
+  border-color:#fff;
+}
+
+.sector-contact{
+  background:#171717;
+}
+.sector-contact .sector-button{
+  border-radius:0;
+}
+.sector-footer{
+  background:#111;
+}
+.sector-footer-top{
+  border-color:#ffffff1f;
+}
+
+@media(max-width:760px){
+  .sector-header .sector-wrap{
+    min-height:auto;
+  }
+  .sector-header nav{
+    border-top:1px solid #ffffff1f;
+  }
+  .sector-related .sector-wrap{
+    grid-template-columns:1fr 1fr;
+  }
+  .sector-related a{
+    min-height:64px;
+    padding:0 18px!important;
+    border-bottom:1px solid #ffffff14!important;
+  }
+  .sector-related a:nth-child(2n){
+    border-right:0!important;
+  }
+}
+@media(max-width:400px){
+  .sector-related .sector-wrap{
+    grid-template-columns:1fr;
+  }
+  .sector-related a{
+    border-right:0!important;
+  }
+}
