@@ -1,19 +1,120 @@
 const photoButton = document.querySelector('.sector-photo-button');
 
 if (photoButton) {
+  const hero = document.querySelector('.sector-hero');
   const photo = document.querySelector('.sector-photo');
+  const photoKey = photoButton.dataset.photo;
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
   let current = 1;
-  photoButton.hidden = false;
+  let paused = motion.matches;
+  let timer = null;
+  let inView = true;
+  let request = 0;
 
-  photoButton.addEventListener('click', () => {
-    current = current === 1 ? 2 : 1;
-    const next = 3 - current;
-    const asset = `/assets/especialidades/${photoButton.dataset.photo}-${current}`;
-    photo.srcset = `${asset}-800.webp 800w, ${asset}-1536.webp 1536w`;
-    photo.src = `${asset}-1536.webp`;
-    photoButton.firstChild.textContent = `${current} / 2 `;
-    photoButton.setAttribute('aria-label', `Mostrar foto ${next} de 2`);
+  const controls = document.createElement('div');
+  controls.className = 'sector-photo-controls';
+  controls.setAttribute('role', 'group');
+  controls.setAttribute('aria-label', 'Controles das fotos desta especialidade');
+  controls.innerHTML = `
+    <button type="button" class="sector-slide-prev" aria-label="Foto anterior">←</button>
+    <span class="sector-slide-counter" aria-hidden="true">01 / 02</span>
+    <span class="sector-slide-status sr-only" aria-live="polite" aria-atomic="true">Foto 1 de 2</span>
+    <button type="button" class="sector-slide-next" aria-label="Próxima foto">→</button>
+    <button type="button" class="sector-slide-pause" aria-label="Pausar apresentação" aria-pressed="false">Ⅱ</button>
+  `;
+  photoButton.replaceWith(controls);
+
+  const prev = controls.querySelector('.sector-slide-prev');
+  const next = controls.querySelector('.sector-slide-next');
+  const pause = controls.querySelector('.sector-slide-pause');
+  const counter = controls.querySelector('.sector-slide-counter');
+  const status = controls.querySelector('.sector-slide-status');
+
+  const assetFor = index => `/assets/especialidades/${photoKey}-${index}`;
+
+  const preload = index => new Promise(resolve => {
+    const img = new Image();
+    img.srcset = `${assetFor(index)}-800.webp 800w, ${assetFor(index)}-1536.webp 1536w`;
+    img.src = `${assetFor(index)}-1536.webp`;
+    if (img.complete) resolve(true);
+    else {
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+    }
   });
+
+  const sync = () => {
+    counter.textContent = `${String(current).padStart(2,'0')} / 02`;
+    status.textContent = `Foto ${current} de 2`;
+    pause.setAttribute('aria-label', paused ? 'Retomar apresentação' : 'Pausar apresentação');
+    pause.setAttribute('aria-pressed', String(paused));
+    pause.textContent = paused ? '▶' : 'Ⅱ';
+  };
+
+  const show = async index => {
+    const sequence = ++request;
+    if (!await preload(index) || sequence !== request) return;
+    photo.classList.add('is-changing');
+    setTimeout(() => {
+      if (sequence !== request) return;
+      const asset = assetFor(index);
+      photo.srcset = `${asset}-800.webp 800w, ${asset}-1536.webp 1536w`;
+      photo.src = `${asset}-1536.webp`;
+      current = index;
+      sync();
+      requestAnimationFrame(() => photo.classList.remove('is-changing'));
+      if (!paused && !document.hidden && inView) void preload(current === 1 ? 2 : 1);
+    }, motion.matches ? 0 : 240);
+  };
+
+  const stop = () => {
+    clearInterval(timer);
+    timer = null;
+  };
+
+  const run = () => {
+    stop();
+    if (!paused && !document.hidden && inView && !controls.matches(':focus-within')) {
+      void preload(current === 1 ? 2 : 1);
+      timer = setInterval(() => void show(current === 1 ? 2 : 1), 6500);
+    }
+  };
+
+  const move = direction => {
+    paused = true;
+    const target = direction > 0 ? (current === 1 ? 2 : 1) : (current === 1 ? 2 : 1);
+    sync();
+    run();
+    void show(target);
+  };
+
+  prev.addEventListener('click', () => move(-1));
+  next.addEventListener('click', () => move(1));
+  pause.addEventListener('click', () => {
+    paused = !paused;
+    sync();
+    run();
+  });
+  controls.addEventListener('focusin', stop);
+  controls.addEventListener('focusout', event => {
+    if (!event.relatedTarget || !controls.contains(event.relatedTarget)) run();
+  });
+  document.addEventListener('visibilitychange', run);
+  motion.addEventListener('change', () => {
+    if (motion.matches) paused = true;
+    sync();
+    run();
+  });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      inView = entries[0].isIntersecting;
+      run();
+    }, { threshold: 0 }).observe(hero);
+  }
+
+  sync();
+  run();
 }
 
 
