@@ -233,3 +233,72 @@ em{font-family:'Syne',Arial,sans-serif;font-size:1em;font-style:normal;font-weig
   .hero-specialty{transition:none}
   .hero-specialty.is-slide-active{transform:none}
 }
+
+/* Faixa de acesso rápido às especialidades: blocos inteiros clicáveis e guiados por cor. */
+.specialty-strip{padding:0;background:#171717}
+.specialty-strip .wrap{width:min(100%,1226px)}
+.specialty-strip a{
+  position:relative;
+  min-height:86px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 34px!important;
+  border-right:1px solid #ffffff18;
+  color:#f3f3f3;
+  font-family:'Manrope',Arial,sans-serif;
+  font-size:12px;
+  font-weight:600;
+  transition:background .32s ease,color .32s ease,transform .32s ease;
+  overflow:hidden;
+}
+.specialty-strip a:before{
+  content:'';
+  width:6px;
+  height:6px;
+  flex:0 0 auto;
+  margin:0;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 45%,transparent);
+  transition:transform .32s ease,box-shadow .32s ease;
+}
+.specialty-strip a:after{
+  content:'↗';
+  margin-left:auto;
+  font-size:17px;
+  line-height:1;
+  opacity:0;
+  transform:translate(-8px,8px);
+  transition:opacity .32s ease,transform .32s ease;
+}
+.specialty-strip a:hover,
+.specialty-strip a:focus-visible{
+  background:color-mix(in srgb,var(--accent) 14%,#171717);
+  color:var(--accent);
+  transform:translateY(-1px);
+}
+.specialty-strip a:hover:before,
+.specialty-strip a:focus-visible:before{
+  transform:scale(1.35);
+  box-shadow:0 0 0 7px color-mix(in srgb,var(--accent) 12%,transparent);
+}
+.specialty-strip a:hover:after,
+.specialty-strip a:focus-visible:after{
+  opacity:1;
+  transform:translate(0,0);
+}
+.specialty-strip .meat{--accent:#c8102e}
+.specialty-strip .conservacao{--accent:#005b96}
+.specialty-strip .obras{--accent:#f4b41a}
+.specialty-strip .staff{--accent:#b8860b}
+@media(max-width:760px){
+  .specialty-strip .wrap{grid-template-columns:1fr 1fr;gap:0}
+  .specialty-strip a{
+    min-height:64px;
+    padding:0 18px!important;
+    border-bottom:1px solid #ffffff14;
+    font-size:11px;
+  }
+  .specialty-strip a:nth-child(2){border-right:0}
+}
