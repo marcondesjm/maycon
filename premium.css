@@ -421,3 +421,66 @@ textarea{min-height:120px}
   .actions{margin-top:20px}
   .hero-bottom{padding-block:12px 18px}
 }
+
+
+/* Marquee contínuo sem fim aparente */
+.editorial-ticker{
+  position:relative;
+  overflow:hidden;
+  width:100%;
+}
+.ticker-track{
+  display:flex;
+  width:max-content;
+  min-width:200%;
+  animation:editorial-drift 34s linear infinite;
+  will-change:transform;
+}
+.ticker-group{
+  flex:0 0 50%;
+  min-width:100vw;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  gap:clamp(28px,3.5vw,64px);
+  padding:18px clamp(22px,3vw,54px);
+  white-space:nowrap;
+}
+.ticker-group span{
+  font-family:'Syne',Arial,sans-serif;
+  font-size:clamp(17px,1.5vw,21px);
+  font-weight:500;
+  font-style:normal;
+  letter-spacing:-.02em;
+  line-height:1.2;
+}
+.ticker-group i{
+  flex:0 0 auto;
+  font-family:Arial,sans-serif;
+  font-size:11px;
+  font-style:normal;
+  color:#a09266;
+}
+@keyframes editorial-drift{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-50%,0,0)}
+}
+@media(max-width:760px){
+  .ticker-track{animation-duration:26s}
+  .ticker-group{
+    gap:26px;
+    padding:16px 22px;
+  }
+  .ticker-group span{font-size:17px}
+}
+@media(prefers-reduced-motion:reduce){
+  .ticker-track{
+    animation:none!important;
+    transform:none!important;
+  }
+  .ticker-group:nth-child(2){display:none}
+  .ticker-group{
+    flex-basis:100%;
+    min-width:100vw;
+  }
+}
