@@ -217,3 +217,25 @@ document.querySelector('#download').addEventListener('click', () => { const url 
   addEventListener('resize', queue, {passive:true});
   render();
 })();
+
+
+/* Reveal specialty quick links on mobile */
+(() => {
+  const strip = document.querySelector('.specialty-strip');
+  if (!strip) return;
+  const links = [...strip.querySelectorAll('a')];
+  links.forEach((link,index)=>link.style.setProperty('--strip-delay',(index*90)+'ms'));
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    strip.classList.add('is-visible');
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting){
+      strip.classList.add('is-visible');
+      observer.disconnect();
+    }
+  },{threshold:.18});
+  observer.observe(strip);
+})();
