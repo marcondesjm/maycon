@@ -212,3 +212,37 @@ if (photoButton) {
     });
   });
 })();
+
+
+/* Responsive hamburger menu for internal pages. */
+(() => {
+  const toggle = document.querySelector('.sector-menu-toggle');
+  const nav = document.querySelector('#sector-navigation');
+  if (!toggle || !nav) return;
+
+  const close = () => {
+    toggle.setAttribute('aria-expanded','false');
+    nav.classList.remove('is-open');
+    document.body.classList.remove('sector-menu-open');
+  };
+
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    nav.classList.toggle('is-open', !open);
+    document.body.classList.toggle('sector-menu-open', !open);
+  });
+
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', close));
+
+  addEventListener('resize', () => {
+    if (innerWidth > 760) close();
+  }, {passive:true});
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      close();
+      toggle.focus();
+    }
+  });
+})();
