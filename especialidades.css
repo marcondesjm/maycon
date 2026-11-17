@@ -164,3 +164,74 @@ h2 { font-size: clamp(2.15rem, 4.4vw, 3.4rem); }
 /* Legibilidade sobre o amarelo da identidade de Obras. */
 .sector-page.obras .sector-brand span, .sector-page.obras .sector-button-primary, .sector-page.obras .group-icon::before { color: #664800; }
 .sector-page.obras .group-letter { color: #202020; }
+
+/* Revisão responsiva — páginas internas */
+@media (max-width: 760px){
+  .sector-wrap{width:92%}
+  .sector-header .sector-wrap{min-height:auto;padding-block:.75rem}
+  .sector-brand{min-width:0}
+  .sector-brand img{width:76px}
+  .sector-header-cta{margin-left:auto}
+  .sector-header nav{
+    order:3;
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:.4rem .9rem;
+    padding-top:.35rem;
+    border-top:1px solid #e2e2e2;
+    font-size:.69rem;
+  }
+  .sector-header nav a{min-height:40px;display:flex;align-items:center}
+  .sector-hero{min-height:500px}
+  .sector-hero-content{padding-block:2.4rem 4.5rem}
+  h1{font-size:clamp(2.25rem,10vw,3.65rem);max-width:13ch}
+  .sector-intro{font-size:.94rem;max-width:38ch}
+  .sector-actions{display:grid;grid-template-columns:1fr;max-width:360px}
+  .sector-actions .sector-button{width:100%}
+  .sector-stats{gap:1rem 2rem}
+  .sector-section-heading{display:grid;gap:.8rem}
+  .sector-section-heading h2{max-width:15ch}
+  .profession-group summary{
+    grid-template-columns:auto 1fr auto;
+    gap:.7rem;
+    padding:1rem .9rem;
+  }
+  .group-count{grid-column:2;line-height:1.3}
+  .group-icon{grid-column:3;grid-row:1 / span 2}
+  .profession-group ul{grid-template-columns:1fr;padding:.35rem 1rem 1.25rem}
+  .sector-related .sector-wrap{grid-template-columns:repeat(2,minmax(0,1fr));gap:0;padding-block:0}
+  .sector-related a{
+    min-height:56px;
+    display:flex;
+    align-items:center;
+    padding:.65rem .8rem!important;
+    border-bottom:1px solid #e1e1e1;
+  }
+  .sector-related a + a{border-left:0}
+  .sector-related a:nth-child(odd){border-right:1px solid #e1e1e1}
+  .sector-contact{padding:2.8rem 0}
+  .sector-contact .sector-wrap{display:grid;grid-template-columns:1fr;gap:1.4rem}
+  .sector-contact .sector-button{width:100%;max-width:360px}
+  .sector-footer-top{display:grid;grid-template-columns:1fr;gap:1.2rem}
+  .sector-footer nav{grid-template-columns:repeat(3,auto);justify-content:start;gap:.6rem 1.2rem}
+}
+@media (max-width: 400px){
+  .sector-wrap{width:94%}
+  .sector-header .sector-wrap{gap:.55rem}
+  .sector-header-cta{width:100%;margin-left:0}
+  .sector-header nav{font-size:.65rem}
+  .sector-hero{min-height:480px}
+  h1{font-size:clamp(2rem,10vw,2.75rem)}
+  .sector-intro{font-size:.9rem}
+  .sector-stats dd{font-size:1.7rem}
+  .sector-related .sector-wrap{grid-template-columns:1fr}
+  .sector-related a:nth-child(odd){border-right:0}
+  .sector-footer nav{grid-template-columns:1fr 1fr}
+  .sector-footer-bottom{display:grid}
+}
+@media (orientation: landscape) and (max-height: 620px) and (max-width: 950px){
+  .sector-hero{min-height:560px}
+  .sector-hero-content{padding-block:2rem 3.5rem}
+  .sector-stats{margin-top:1rem}
+}
