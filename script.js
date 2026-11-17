@@ -239,3 +239,29 @@ document.querySelector('#download').addEventListener('click', () => { const url 
   },{threshold:.18});
   observer.observe(strip);
 })();
+
+
+/* Basic source-view deterrence for public pages.
+   Note: client-side source cannot be made truly inaccessible once delivered to a browser. */
+(() => {
+  const block = event => {
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+  };
+
+  document.addEventListener('contextmenu', block, { capture:true });
+
+  document.addEventListener('keydown', event => {
+    const key = String(event.key || '').toLowerCase();
+    const ctrl = event.ctrlKey || event.metaKey;
+    const shift = event.shiftKey;
+
+    const blocked =
+      key === 'f12' ||
+      (ctrl && key === 'u') ||
+      (ctrl && shift && ['i','j','c'].includes(key));
+
+    if (blocked) block(event);
+  }, { capture:true });
+})();
