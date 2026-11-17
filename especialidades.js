@@ -182,3 +182,33 @@ if (photoButton) {
     });
   }
 })();
+
+
+/* Header motion aligned with the home */
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const header = document.querySelector('.sector-header');
+  if (!header) return;
+
+  const items = [
+    header.querySelector('.sector-brand'),
+    ...header.querySelectorAll('nav a'),
+    header.querySelector('.sector-header-cta')
+  ].filter(Boolean);
+
+  items.forEach((el, index) => {
+    el.classList.add('sector-header-motion');
+    el.style.setProperty('--header-delay', (index * 70) + 'ms');
+  });
+
+  if (reduce.matches) {
+    items.forEach(el => el.classList.add('sector-header-motion-visible'));
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      items.forEach(el => el.classList.add('sector-header-motion-visible'));
+    });
+  });
+})();
