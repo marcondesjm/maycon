@@ -26,7 +26,7 @@ let briefing = '';
 form.addEventListener('submit', event => {
  event.preventDefault(); if (!form.reportValidity()) return;
  const data = new FormData(form);
- briefing = `Briefing — Maycon Vieira Services\n\nNome: ${data.get('nome').trim()}\nEmpresa: ${data.get('empresa').trim()}\nE-mail: ${data.get('email').trim()}\nEspecialidade: ${data.get('especialidade')}\n\nDescrição do pedido:\n${data.get('demanda').trim()}`;
+ briefing = `Resumo do pedido — Maycon Vieira Services\n\nNome: ${data.get('nome').trim()}\nEmpresa: ${data.get('empresa').trim()}\nE-mail: ${data.get('email').trim()}\nEspecialidade: ${data.get('especialidade')}\n\nDescrição do pedido:\n${data.get('demanda').trim()}`;
  document.querySelector('#briefing-preview').textContent = briefing;
  const result = document.querySelector('#form-result');
  result.hidden = false;
