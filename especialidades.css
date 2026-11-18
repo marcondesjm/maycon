@@ -115,7 +115,7 @@ h2 { font-size: clamp(2.15rem, 4.4vw, 3.4rem); }
 .profession-group[open] summary { border-bottom: 1px solid var(--accent); }
 .group-letter { display: grid; place-items: center; min-width: 2rem; min-height: 2rem; background: var(--accent); color: white; font-weight: 700; }
 .group-title { font-weight: 700; line-height: 1.3; }
-.profession-group [lang="en"], .group-count { display: block; font-size: .75rem; color: #4f5c54; font-weight: 400; }
+.group-count { display: block; font-size: .75rem; color: #4f5c54; font-weight: 400; }
 .group-icon::before { content: "+"; color: var(--accent); font-size: 1.4rem; line-height: 1; }
 .profession-group[open] .group-icon::before { content: "−"; }
 .profession-group ul {

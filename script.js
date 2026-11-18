@@ -26,7 +26,7 @@ let briefing = '';
 form.addEventListener('submit', event => {
  event.preventDefault(); if (!form.reportValidity()) return;
  const data = new FormData(form);
- briefing = `Briefing — Maycon Vieira Services\n\nNome: ${data.get('nome').trim()}\nEmpresa: ${data.get('empresa').trim()}\nE-mail: ${data.get('email').trim()}\nEspecialidade: ${data.get('especialidade')}\n\nDemanda:\n${data.get('demanda').trim()}`;
+ briefing = `Briefing — Maycon Vieira Services\n\nNome: ${data.get('nome').trim()}\nEmpresa: ${data.get('empresa').trim()}\nE-mail: ${data.get('email').trim()}\nEspecialidade: ${data.get('especialidade')}\n\nDescrição do pedido:\n${data.get('demanda').trim()}`;
  document.querySelector('#briefing-preview').textContent = briefing;
  const result = document.querySelector('#form-result');
  result.hidden = false;
@@ -161,9 +161,9 @@ document.querySelector('#download').addEventListener('click', () => { const url 
   const activeSpecialty = identifySpecialty(slides[current]);
   specialtyLabels.forEach(label => label.classList.toggle('is-slide-active', label.classList.contains(`hero-specialty-${activeSpecialty}`)));
   counter.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
-  const specialtyName = activeSpecialty === 'meat' ? 'Alimentação' : activeSpecialty === 'conservacao' ? 'Conservação' : activeSpecialty === 'obras' ? 'Obras' : activeSpecialty === 'staff' ? 'Staff' : 'Imagem institucional';
-  if (status) status.textContent = `Slide ${current+1} de ${slides.length}: ${specialtyName}`;
-  pause.setAttribute('aria-label',paused ? 'Retomar apresentação' : 'Pausar apresentação');
+  const specialtyName = activeSpecialty === 'meat' ? 'Serviços alimentares' : activeSpecialty === 'conservacao' ? 'Conservação' : activeSpecialty === 'obras' ? 'Obras' : activeSpecialty === 'staff' ? 'Staff' : 'Imagem institucional';
+  if (status) status.textContent = `Fotografia ${current+1} de ${slides.length}: ${specialtyName}`;
+  pause.setAttribute('aria-label',paused ? 'Retomar a apresentação' : 'Colocar a apresentação em pausa');
   pause.setAttribute('aria-pressed',String(paused)); pause.textContent = paused ? '▶' : 'Ⅱ';
  };
  const stop = () => { clearInterval(timer); timer = null; };

@@ -14,13 +14,13 @@ if (photoButton) {
   const controls = document.createElement('div');
   controls.className = 'sector-photo-controls';
   controls.setAttribute('role', 'group');
-  controls.setAttribute('aria-label', 'Controles das fotos desta especialidade');
+  controls.setAttribute('aria-label', 'Controlos das fotografias desta especialidade');
   controls.innerHTML = `
-    <button type="button" class="sector-slide-prev" aria-label="Foto anterior">←</button>
+    <button type="button" class="sector-slide-prev" aria-label="Fotografia anterior">←</button>
     <span class="sector-slide-counter" aria-hidden="true">01 / 02</span>
     <span class="sector-slide-status sr-only" aria-live="polite" aria-atomic="true">Foto 1 de 2</span>
-    <button type="button" class="sector-slide-next" aria-label="Próxima foto">→</button>
-    <button type="button" class="sector-slide-pause" aria-label="Pausar apresentação" aria-pressed="false">Ⅱ</button>
+    <button type="button" class="sector-slide-next" aria-label="Fotografia seguinte">→</button>
+    <button type="button" class="sector-slide-pause" aria-label="Colocar a apresentação em pausa" aria-pressed="false">Ⅱ</button>
   `;
   photoButton.replaceWith(controls);
 
@@ -45,8 +45,8 @@ if (photoButton) {
 
   const sync = () => {
     counter.textContent = `${String(current).padStart(2,'0')} / 02`;
-    status.textContent = `Foto ${current} de 2`;
-    pause.setAttribute('aria-label', paused ? 'Retomar apresentação' : 'Pausar apresentação');
+    status.textContent = `Fotografia ${current} de 2`;
+    pause.setAttribute('aria-label', paused ? 'Retomar a apresentação' : 'Colocar a apresentação em pausa');
     pause.setAttribute('aria-pressed', String(paused));
     pause.textContent = paused ? '▶' : 'Ⅱ';
   };
