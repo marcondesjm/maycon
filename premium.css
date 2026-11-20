@@ -580,3 +580,28 @@ textarea{min-height:120px}
     animation:none!important;
   }
 }
+
+.supporters {
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  background: #eeece7;
+  color: #191919;
+  text-align: center;
+}
+.supporters h2 {
+  margin: 0 0 2rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.supporters-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem clamp(3rem, 8vw, 7rem);
+}
+.supporters-logos img {
+  display: block;
+  width: auto;
+  max-width: 88%;
+  height: 3.25rem;
+  object-fit: contain;
+}
