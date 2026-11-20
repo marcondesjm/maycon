@@ -605,3 +605,25 @@ textarea{min-height:120px}
   height: 3.25rem;
   object-fit: contain;
 }
+
+@keyframes supporter-arrival {
+  from { opacity: .55; translate: 0 12px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .supporters-logos img {
+      animation: supporter-arrival 1s ease-out both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .supporters-logos img {
+    transition: transform 260ms ease-out;
+  }
+  .supporters-logos img:hover {
+    transform: translateY(-3px) scale(1.035);
+  }
+}
