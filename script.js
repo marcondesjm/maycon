@@ -22,13 +22,41 @@ document.querySelectorAll('.service').forEach(card => {
   });
 });
 const form = document.querySelector('#briefing');
+const submitButton = form.querySelector('button[type="submit"]');
+const formStatus = document.querySelector('#form-status');
+const result = document.querySelector('#form-result');
 let briefing = '';
-form.addEventListener('submit', event => {
- event.preventDefault(); if (!form.reportValidity()) return;
+
+form.addEventListener('submit', async event => {
+ event.preventDefault();
+ if (submitButton.disabled || !form.reportValidity()) return;
+
  const data = new FormData(form);
+ result.hidden = true;
+ formStatus.textContent = 'A enviar o pedido…';
+ submitButton.disabled = true;
+
+ try {
+  const response = await fetch(form.action, {
+   method: 'POST',
+   headers: {Accept: 'application/json'},
+   body: new URLSearchParams(data),
+  });
+  const payload = await response.json();
+  if (typeof payload.message !== 'string') throw new Error('Resposta inválida');
+  formStatus.textContent = payload.message;
+  if (response.ok) {
+   form.reset();
+   return;
+  }
+ } catch {
+  formStatus.textContent = 'Não foi possível concluir o envio. Pode descarregar o resumo abaixo.';
+ } finally {
+  submitButton.disabled = false;
+ }
+
  briefing = `Resumo do pedido — Maycon Vieira Services\n\nNome: ${data.get('nome').trim()}\nEmpresa: ${data.get('empresa').trim()}\nE-mail: ${data.get('email').trim()}\nEspecialidade: ${data.get('especialidade')}\n\nDescrição do pedido:\n${data.get('demanda').trim()}`;
  document.querySelector('#briefing-preview').textContent = briefing;
- const result = document.querySelector('#form-result');
  result.hidden = false;
  result.focus({preventScroll:true});
  result.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'nearest'});
