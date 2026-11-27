@@ -40,42 +40,65 @@ if (
     respond(422, 'Verifique os campos do formulário e tente novamente.');
 }
 
-$apiKey = getenv('RESEND_API_KEY');
+$host = getenv('SMTP_HOST');
+$port = filter_var(getenv('SMTP_PORT') ?: '587', FILTER_VALIDATE_INT);
+$username = getenv('SMTP_USERNAME');
+$password = getenv('SMTP_PASSWORD');
 $from = getenv('CONTACT_FROM_EMAIL');
 $to = getenv('CONTACT_TO_EMAIL');
 
-if (!$apiKey || !filter_var($from, FILTER_VALIDATE_EMAIL) || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+if (
+    !$host || !filter_var($host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) ||
+    !in_array($port, [465, 587], true) ||
+    !$username || $password === false || $password === '' ||
+    !filter_var($from, FILTER_VALIDATE_EMAIL) || !filter_var($to, FILTER_VALIDATE_EMAIL)
+) {
     respond(503, 'O envio por e-mail ainda não está disponível.');
 }
 
-$payload = json_encode([
-    'from' => $from,
-    'to' => [$to],
-    'reply_to' => $email,
-    'subject' => 'Pedido MV Services: ' . $specialty,
-    'text' => "Nome: $name\nEmpresa: $company\nE-mail: $email\nEspecialidade: $specialty\n\nDescrição do pedido:\n$message",
-], JSON_THROW_ON_ERROR);
-
-if (!function_exists('curl_init')) {
+$protocol = $port === 465 ? 'smtps' : 'smtp';
+if (!function_exists('curl_version') || !in_array($protocol, curl_version()['protocols'], true)) {
     respond(503, 'O envio por e-mail está temporariamente indisponível.');
 }
 
-$request = curl_init('https://api.resend.com/emails');
+$subject = base64_encode('Pedido MV Services: ' . $specialty);
+$body = "Nome: $name\nEmpresa: $company\nE-mail: $email\nEspecialidade: $specialty\n\nDescrição do pedido:\n$message";
+$body = preg_replace("/\r\n|\r|\n/", "\r\n", $body);
+$headers = [
+    'Date: ' . date(DATE_RFC2822),
+    "From: <$from>",
+    "To: <$to>",
+    "Reply-To: <$email>",
+    "Subject: =?UTF-8?B?$subject?=",
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=UTF-8',
+    'Content-Transfer-Encoding: base64',
+];
+$payload = implode("\r\n", $headers) . "\r\n\r\n" . chunk_split(base64_encode($body));
+
+$upload = fopen('php://memory', 'r+');
+fwrite($upload, $payload);
+rewind($upload);
+
+$request = curl_init("$protocol://$host:$port");
 curl_setopt_array($request, [
-    CURLOPT_POST => true,
-    CURLOPT_POSTFIELDS => $payload,
-    CURLOPT_HTTPHEADER => [
-        'Authorization: Bearer ' . $apiKey,
-        'Content-Type: application/json',
-    ],
+    CURLOPT_USERNAME => $username,
+    CURLOPT_PASSWORD => $password,
+    CURLOPT_USE_SSL => CURLUSESSL_ALL,
+    CURLOPT_MAIL_FROM => "<$from>",
+    CURLOPT_MAIL_RCPT => ["<$to>"],
+    CURLOPT_UPLOAD => true,
+    CURLOPT_INFILE => $upload,
+    CURLOPT_INFILESIZE => strlen($payload),
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_CONNECTTIMEOUT => 3,
+    CURLOPT_CONNECTTIMEOUT => 4,
     CURLOPT_TIMEOUT => 8,
 ]);
 
 $result = curl_exec($request);
 $status = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
 curl_close($request);
+fclose($upload);
 
 if ($result === false || $status < 200 || $status >= 300) {
     respond(502, 'Não foi possível enviar a mensagem. Tente novamente dentro de momentos.');
