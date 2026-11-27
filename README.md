@@ -156,15 +156,18 @@ O site segue uma direção visual premium, com:
 
 ## Formulário de briefing
 
-O formulário envia nome, empresa, e-mail, especialidade e descrição do pedido para `POST /api/enviar-contato.php`. A função valida os campos e encaminha o pedido por e-mail via Resend. Se o envio estiver indisponível, o visitante pode descarregar o resumo em formato `.txt`.
+O formulário envia nome, empresa, e-mail, especialidade e descrição do pedido para `POST /api/enviar-contato.php`. A função valida os campos e encaminha o pedido por SMTP autenticado com TLS. Se o envio estiver indisponível, o visitante pode descarregar o resumo em formato `.txt`.
 
 Para ativar o envio, adicione estas variáveis de ambiente no projeto da Vercel e faça um novo deploy.
 
-- `RESEND_API_KEY` — chave de envio do Resend.
-- `CONTACT_FROM_EMAIL` — endereço remetente num domínio verificado no Resend.
+- `SMTP_HOST` — nome do servidor SMTP, sem protocolo nem porta.
+- `SMTP_PORT` — `587` para STARTTLS (padrão) ou `465` para TLS implícito.
+- `SMTP_USERNAME` e `SMTP_PASSWORD` — credenciais SMTP do provedor.
+- `CONTACT_FROM_EMAIL` — endereço remetente autorizado pelo provedor SMTP.
 - `CONTACT_TO_EMAIL` — endereço da MV Services para receber os pedidos.
 
-O e-mail introduzido no formulário é usado como endereço de resposta. Para testar a rota localmente, execute `php -S localhost:4183` na raiz do projeto com PHP 8.1 ou superior e a extensão cURL.
+O e-mail introduzido no formulário é usado como endereço de resposta. Para testar a rota localmente, execute `php -S localhost:4183` na raiz do projeto com PHP 8.1 ou superior e a extensão cURL com suporte a SMTP e TLS.
+
 
 ---
 
