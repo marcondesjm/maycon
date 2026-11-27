@@ -136,7 +136,7 @@ O site segue uma direção visual premium, com:
 - parallax discreto;
 - menu responsivo;
 - animações mobile;
-- formulário de briefing local.
+- formulário de pedido com opção de descarregar o resumo.
 
 ### Páginas internas
 
@@ -156,26 +156,15 @@ O site segue uma direção visual premium, com:
 
 ## Formulário de briefing
 
-O formulário da home:
+O formulário envia nome, empresa, e-mail, especialidade e descrição do pedido para `POST /api/enviar-contato.php`. A função valida os campos e encaminha o pedido por e-mail via Resend. Se o envio estiver indisponível, o visitante pode descarregar o resumo em formato `.txt`.
 
-1. recebe nome, empresa, e-mail, especialidade e demanda;
-2. monta um briefing localmente no navegador;
-3. exibe uma prévia;
-4. permite baixar o briefing em arquivo `.txt`.
+Para ativar o envio, adicione estas variáveis de ambiente no projeto da Vercel e faça um novo deploy.
 
-### Importante
+- `RESEND_API_KEY` — chave de envio do Resend.
+- `CONTACT_FROM_EMAIL` — endereço remetente num domínio verificado no Resend.
+- `CONTACT_TO_EMAIL` — endereço da MV Services para receber os pedidos.
 
-Na versão atual, **os dados não são enviados para servidor**.
-
-Se futuramente o formulário passar a:
-- enviar e-mail;
-- gravar em banco;
-- enviar para CRM;
-- integrar com API;
-- enviar para WhatsApp;
-- usar automação;
-
-a Política de Privacidade deve ser revista.
+O e-mail introduzido no formulário é usado como endereço de resposta. Para testar a rota localmente, execute `php -S localhost:4183` na raiz do projeto com PHP 8.1 ou superior e a extensão cURL.
 
 ---
 
